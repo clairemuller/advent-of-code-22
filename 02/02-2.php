@@ -8,19 +8,19 @@ $str = file_get_contents('02-data.txt');
 $arr = explode("\n", $str);
 // get: [ [0]=> "B Y" [1]=> "A Z" [2]=> "C Z" ]
 
-$letter_to_rps = [
-  'A' => 'rock',
-  'X' => 'rock',
-  'B' => 'paper',
-  'Y' => 'paper',
-  'C' => 'scissors',
-  'Z' => 'scissors'
+$points = [
+  'A' => 1, // rock
+  'B' => 2, // paper
+  'C' => 3, // scissors
+  'X' => 0, // lose
+  'Y' => 3, // draw
+  'Z' => 6, // win
 ];
 
-$rps_scores = [
-  'rock' => 1,
-  'paper' => 2,
-  'scissors' => 3,
+$winner = [
+  'A' => 'C', // rock beats scissors
+  'B' => 'A', // paper beats rock
+  'C' => 'B', // scissors beats paper
 ];
 
 $total_score = 0;
@@ -29,24 +29,23 @@ foreach ($arr as $val) {
   $letters_arr = explode(" ", $val);
   // [ [0]=> "B", [1]=> "Y" ]
 
-  $them = $letter_to_rps[$letters_arr[0]];
-  $me = $letter_to_rps[$letters_arr[1]];
+  $them   = $letters_arr[0];
+  $result = $letters_arr[1];
+  $total_score += $points[$result];
 
-  $total_score += $rps_scores[$me];
-
-  // lost => 0
-  // draw => 3
-  // win => 6
-
-  if (strlen($them) != 0 && strlen($me) != 0 && $them == $me) {
-    // draw
-    $total_score += 3;
-  } else if (($me == 'rock' && $them == 'scissors') || ($me == 'paper' && $them == 'rock') || ($me == 'scissors' && $them == 'paper')) {
-    // I win
-    $total_score += 6;
-  } else {
-    // I lose
+  if ($result == "X") {
+    // x = lose = 0
+    // find the value defeated by $result
+    $me = $winner[$them];
+  } else if ($result == "Y") {
+    // Y = draw = 3
+    $me = $them;
+  } else if ($result == "Z") {
+    // Z = win = 6
+    $me = array_search($them, $winner);
   }
+
+  $total_score += $points[$me];
 }
 
 echo($total_score);
