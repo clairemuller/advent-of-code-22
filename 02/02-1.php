@@ -1,9 +1,14 @@
 <?php
 $str = file_get_contents('02-data.txt');
 
+// given:
+// B Y
+// A Z
+// C Z
 $arr = explode("\n", $str);
+// get: [ [0]=> "B Y" [1]=> "A Z" [2]=> "C Z" ]
 
-$rps = [
+$letter_to_rps = [
   'A' => 'rock',
   'X' => 'rock',
   'B' => 'paper',
@@ -12,7 +17,7 @@ $rps = [
   'Z' => 'scissors'
 ];
 
-$scores = [
+$rps_scores = [
   'rock' => 1,
   'paper' => 2,
   'scissors' => 3,
@@ -21,12 +26,13 @@ $scores = [
 $total_score = 0;
 
 foreach ($arr as $val) {
-  $arr2 = explode(" ", $val);
+  $letters_arr = explode(" ", $val);
+  // [ [0]=> "B", [1]=> "Y" ]
 
-  $them = $rps[$arr2[0]];
-  $me = $rps[$arr2[1]];
+  $them = $letter_to_rps[$letters_arr[0]];
+  $me = $letter_to_rps[$letters_arr[1]];
 
-  $total_score += $scores[$me];
+  $total_score += $rps_scores[$me];
 
   // lost => 0
   // draw => 3
